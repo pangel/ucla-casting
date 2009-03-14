@@ -1,2 +1,2 @@
-require init
+require 'init'
 run Sinatra::Application
