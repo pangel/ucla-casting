@@ -1,0 +1,14 @@
+%form{:method => "post", :action => "/add"}
+  %label Project title
+  %input{:type => "text", :name => "title"}
+  
+  %label When?
+  %input{:type => "text", :name => "when"}
+  
+  %label Where?
+  %input{:type => "text", :name => "where"}
+  
+  %label What are you looking for? (gender, age...)
+  %textarea{:name => "description"}
+  
+  %input{:type => "submit"}
