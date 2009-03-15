@@ -21,9 +21,14 @@ get '/' do
   haml :list
 end
 
-get '/migrateall' do
-  DataMapper.auto_migrate!
-  Devtools.load_dev_data
+get '/migrateall/:slug' do
+  if params[:slug] == "jHRo2IRhTjysEz68JlfR"
+    DataMapper.auto_migrate!
+    Devtools.load_dev_data
+    haml "%h1 Migration Completed. <br />Dev Data Loaded."
+  else
+    status 404
+  end
 end
 
 get '/add' do
