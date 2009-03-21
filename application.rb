@@ -5,12 +5,12 @@ configure do
   set :views, "#{File.dirname(__FILE__)}/views"
 end
  
-error do
-  e = request.env['sinatra.error']
-  puts e.to_s
-  puts e.backtrace.join('\n')
-  'Application error'
-end
+#error do
+#  e = request.env['sinatra.error']
+#  puts e.to_s
+#  puts e.backtrace.join('\n')
+#  'Application error'
+#end
  
 helpers do
   # add your helpers here
@@ -21,14 +21,10 @@ get '/' do
   haml :list
 end
 
-get '/migrateall/:slug' do
-  if params[:slug] == "jHRo2IRhTjysEz68JlfR"
-    DataMapper.auto_migrate!
-    Devtools.load_dev_data
-    haml "%h1 Migration Completed. <br />Dev Data Loaded."
-  else
-    status 404
-  end
+get '/migrateall/jHRo2IRhTjysEz68JlfR' do
+  DataMapper.auto_migrate!
+  Devtools.load_dev_data
+  haml "%h1 Migration Completed. <br />Dev Data Loaded."
 end
 
 get '/add' do
@@ -45,6 +41,6 @@ post '/add' do
 end
 
 get '/stylesheets/style.css' do
-  header 'Content-Type' => 'text/css; charset=utf-8'
+  headers 'Content-Type' => 'text/css; charset=utf-8'
   sass :style
 end

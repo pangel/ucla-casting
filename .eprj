@@ -6,6 +6,12 @@
         <dict>
             <key>app</key>
             <string>application.rb</string>
+            <key>appl</key>
+            <string>application.rb</string>
+            <key>audi</key>
+            <string>lib\audition.rb</string>
+            <key>layo</key>
+            <string>views\layout.haml</string>
         </dict>
     </dict>
 </plist>
