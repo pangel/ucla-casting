@@ -4,7 +4,13 @@
   
   %label When?
   %input{:type => "text", :name => "datepicker", :id => "datepicker"}
-  %input{:type => "hidden", :name => "when", :id => "when"}
+  %input{:type => "hidden", :name => "when-date", :id => "when-date"}
+  
+  %select{:name => "when-time"}
+    - times_of_day.each do |time|
+      %option{:value => time, :selected => (time=="1:00 pm")}= time
+  %label Pick a time.
+  
   %label Where?
   %input{:type => "text", :name => "where"}
   
