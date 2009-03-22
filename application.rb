@@ -4,7 +4,9 @@ require 'environment'
 configure do
   set :views, "#{File.dirname(__FILE__)}/views"
 end
- 
+
+
+
 #error do
 #  e = request.env['sinatra.error']
 #  puts e.to_s
@@ -13,7 +15,14 @@ end
 #end
  
 helpers do
-  # add your helpers here
+  def blue(string)
+    puts "\n\e[0;34m #{string} \e[m\n\n"
+  end
+  
+  def green(string)
+    puts "\n\e[0;32m #{string} \e[m\n\n"
+  end
+  
   class Fixnum    
     # Returns a string of the integer prefixed with zeros. 
     # Enough zeros will be added so as to make a string that is _characters_ long.
@@ -31,10 +40,14 @@ helpers do
         }.flatten!
       }
   
-    times.call("am").concat(times.call("pm"))
+    times.call("am") << times.call("pm")
   end
 end
- 
+
+before do
+  blue (params.inspect)
+end
+
 get '/' do
   @auditions = Audition.all(:order => [:when.asc])
   haml :list
@@ -51,8 +64,13 @@ get '/add' do
 end
 
 post '/add' do
-  puts params.inspect
-  @audition = Audition.new(params)
+  audition_properties = {
+                        :when => Time.parse("#{params["when_date"]} #{params["when_time"]}"),
+                        :description => params["description"],
+                        :where => params["where"],
+                        :title => params["title"]
+                        }
+  @audition = Audition.new(audition_properties)
   @audition.errors.each do |e| 
     puts e 
   end unless @audition.save
