@@ -1,6 +1,15 @@
-%a{:href => "/add"} Add new audition
+%a#menu{:href => "/add"} Add new audition
 - @auditions.each do |audition|
-  #audition
-    %h2= "#{audition.title} (#{audition.id})"
-    %p= audition.when
-    %p= audition.description
+  .audition
+    %p<
+      %span.delay= audition.when.to_delay.downcase!
+    %h2= "#{audition.title.downcase!}"
+   
+    %div.access
+      %p
+        %span.when When:
+        = audition.when.strftime "%A, %B %d %Y at %I:%M%p"
+      %p
+        %span.where Where:
+        = audition.where
+    %p.description= audition.description.nl2br

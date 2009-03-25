@@ -3,7 +3,7 @@ class Audition
  
   property :id, Serial
   property :title, String
-  property :when, DateTime
+  property :when, Time
   property :where, String
   property :description, Text
  
