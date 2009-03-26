@@ -3,19 +3,44 @@ body
   :font-family "Trebuchet MS", "Helvetica", "sans-serif"
   :margin-top 2.2em
   :margin-left 2.2em
-  
 
-  
 h1
   :font-size 2em
   :line-height 2.2em
   :width 350px 
   :height 3.3em 
   :background url("../uclacastings.png")  
-  :text-indent -9999px 
+  :text-indent -9999px
+  :background-position top left 
   :background-repeat no-repeat
+
+a
+  :text-decoration none
   
 #menu
+  :display inline-block
+  :min-height 60px
+  :background url("../add-audition.png")
+  :background-position top center
+  :background-repeat no-repeat
+  :position absolute
+  :left 26em
+  :top 2em
+  
+  span
+    :text-transform lowercase
+    :display block
+    :margin-top 36px
+    :font-size 0.857143em
+    :line-height 0.9em
+    :padding 0.3em 0.5em 0.3em 0.5em
+    :color black
+    :font-variant small-caps
+    
+#menu:hover
+  span
+    :background-color black
+    :color white
 
 // List page
 
@@ -27,7 +52,6 @@ h1
 .delay-wrap
   :line-height 2.2em
   :margin-bottom 0.5em
-  
 
 .delay
   :font-variant small-caps
@@ -58,7 +82,6 @@ a,p
   :margin-bottom 1.57143em
 
 .access p
-  //:background #DBE6E4
   :font-weight bold
   :font-size 1.2em
   :line-height 1.8333em
