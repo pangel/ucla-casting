@@ -16,11 +16,17 @@ h1
 
 a
   :text-decoration none
+
+#add
+  :background-image url("../add-audition.png")
   
-#menu
+#list
+  :background-image url("../list-auditions.png")
+  
+#add, #list
   :display inline-block
   :min-height 60px
-  :background url("../add-audition.png")
+
   :background-position top center
   :background-repeat no-repeat
   :position absolute
@@ -36,8 +42,9 @@ a
     :padding 0.3em 0.5em 0.3em 0.5em
     :color black
     :font-variant small-caps
+    :text-align center
     
-#menu:hover
+#add:hover, #list:hover
   span
     :background-color black
     :color white
@@ -90,7 +97,72 @@ a,p
   :display none
   
 // Add page
+
+.add-form
+  :width 40em
+  :margin-top 2.2em
+  :margin-bottom 4.4em
   
+.alt-one, .alt-two
+  :padding 1em 0em 1em 1em
+  :border-top 1px solid #798E8B
+  // Base font size: 14pt (1.4 * 62.5% of 16pt)
+  :font-size 1.4em
+  // Baseline: 21pt (1.5 * 1.4em * 62.5% of 16pt)
+  :line-height 1.57143em
+
+.alt-one
+  :background-color #D2DEDC  
+  
+.alt-two
+  :background-color #F7F7F7
+  
+fieldset
+  border: 0px
+  margin: 0px
+  padding: 0px
+    
 label
   :display block
+  :font-weight bold
+  
+select
+  :display inline
+  :margin-left 1em
+  :font-size 0.85743em
   :margin-top 1em
+  :height 2em
+  
+input
+  :display block
+  :font-size 0.85743em
+  :height 1.8em
+  :line-height 12px
+  :width 25em
+  :padding 0.3833em 0em 0.20em 0em
+  
+  &#datepicker
+    :width 6em
+    :padding 0.5em 0em 0.2em 0em
+    :display inline
+  
+  &#when_date
+    :display none
+  
+  &#submit
+    :height auto
+    :width auto
+    :font-size 1.4em
+    :margin-left 0.833em
+    :padding 0.2em 0.3em 0.3em 0.3em
+textarea
+  :font-size 1.05418em
+  :line-height 1.8333em
+  :width 25em
+
+.at
+  :margin-left 1em
+      
+.ui-datepicker-trigger
+  :vertical-align middle
+  :margin-left 1em

@@ -1,21 +1,27 @@
-%a{:href => "/"} All auditions
-%form{:method => "post", :action => "/add"}
-  %label Project title
-  %input{:type => "text", :name => "title"}
+%a#list{:href => "/"} 
+  %span Back to <br />list
+.add-form
+  %form{:method => "post", :action => "/add"}
+  .alt-one
+    %label Project title
+    %input{:type => "text", :name => "title"}
   
-  %label When?
-  %input{:type => "text", :name => "datepicker", :id => "datepicker"}
-  %input{:type => "hidden", :name => "when_date", :id => "when_date"}
+  .alt-two
+    %label When?
+    %fieldset
+      %input{:type => "text", :name => "datepicker", :id => "datepicker"}
+      %input{:type => "hidden", :name => "when_date", :id => "when_date"}
+      %span.at at
+      %select{:name => "when_time", :id => "when-time"}
+        - times_of_day.each do |time|
+          %option{:value => time, :selected => (time=="1:00 pm")}= time
   
-  %select{:name => "when_time"}
-    - times_of_day.each do |time|
-      %option{:value => time, :selected => (time=="1:00 pm")}= time
-  %label Pick a time.
+  .alt-one
+    %label Where?
+    %textarea{:rows => "3", :name => "where"}
   
-  %label Where?
-  %input{:type => "text", :name => "where"}
+  .alt-two
+    %label What are you looking for? (gender, age...)
+    %textarea{:rows => "4", :name => "description"}
   
-  %label What are you looking for? (gender, age...)
-  %textarea{:name => "description"}
-  
-  %input{:type => "submit"}
+  %input#submit{:type => "submit"}
