@@ -2,7 +2,7 @@
   %span Add new <br />audition
 - @auditions.each do |audition|
   .audition
-    %p<
+    %p.delay-wrap<
       %span.delay= audition.when.to_delay.downcase!
     %h2= "#{audition.title.downcase!}"
    
