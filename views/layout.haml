@@ -14,5 +14,8 @@
     %script{:type => "text/javascript", :src => "js/jquery-1.3.2.min.js"}
     %script{:type => "text/javascript", :src => "js/jquery-ui-1.7.1.custom.min.js"}
     :javascript
-      $('#datepicker').datepicker({ changeMonth: true, changeYear: true, firstDay: 1,yearRange: '-0:+2', showButtonPanel: true,showOn: 'button', buttonImage: 'calendar.png', buttonText: 'Pick a day', altField: '#when_date', altFormat: 'yy-mm-dd' });
-    
+      $(document).ready(function(){
+        $('#datepicker').datepicker({ changeMonth: true, changeYear: true, firstDay: 1,yearRange: '-0:+2', showButtonPanel: true,showOn: 'button', buttonImage: 'calendar.png', buttonText: 'Pick a day', altField: '#when_date', altFormat: 'yy-mm-dd' });
+      });
+
+      
