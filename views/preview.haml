@@ -17,23 +17,26 @@
   .alt-two
     %label What are you looking for? (gender, age...)
     %p= @preview[:description].nl2br
+  %p#confirm Are you sure? There is no turning back.
     
-  %form.hidden{:method => "post", :action => '/add'}
-    %input.hidden{:type => "hidden", :name => "title", :value => @audition[:title]}
-    %input.hidden{:type => "hidden", :name => "when_date", :value => @audition[:when_date]}
-    %input.hidden{:type => "hidden", :name => "when_time", :value => @audition[:when_time]}
-    %input.hidden{:type => "hidden", :name => "where", :value => @audition[:where]}
-    %input.hidden{:type => "hidden", :name => "description", :value => @audition[:description]}
-    %input.hidden{:type => "hidden", :name => "datepicker", :value => @audition[:datepicker]}
-    %input#cancel{:type => "submit", :value => "Wait, go back"}
+  
+  #confirm-buttons
+    %form.hidden{:method => "post", :action => '/add'}
+      %input.hidden{:type => "hidden", :name => "title", :value => @audition[:title]}
+      %input.hidden{:type => "hidden", :name => "when_date", :value => @audition[:when_date]}
+      %input.hidden{:type => "hidden", :name => "when_time", :value => @audition[:when_time]}
+      %input.hidden{:type => "hidden", :name => "where", :value => @audition[:where]}
+      %input.hidden{:type => "hidden", :name => "description", :value => @audition[:description]}
+      %input.hidden{:type => "hidden", :name => "datepicker", :value => @audition[:datepicker]}
+      %input#cancel{:type => "submit", :value => "Wait, go back"}
     
-  %form.hidden{:method => "post", :action => '/create'}
-    %input.hidden{:type => "hidden", :name => "title", :value => @audition[:title]}
-    %input.hidden{:type => "hidden", :name => "when_date", :value => @audition[:when_date]}
-    %input.hidden{:type => "hidden", :name => "when_time", :value => @audition[:when_time]}
-    %input.hidden{:type => "hidden", :name => "where", :value => @audition[:where]}
-    %input.hidden{:type => "hidden", :name => "description", :value => @audition[:description]}
-    %input.hidden{:type => "hidden", :name => "datepicker", :value => @audition[:datepicker]}    
-    %input#submit{:type => "submit", :value => "OK, Create audition"}
+    %form.hidden{:method => "post", :action => '/create'}
+      %input.hidden{:type => "hidden", :name => "title", :value => @audition[:title]}
+      %input.hidden{:type => "hidden", :name => "when_date", :value => @audition[:when_date]}
+      %input.hidden{:type => "hidden", :name => "when_time", :value => @audition[:when_time]}
+      %input.hidden{:type => "hidden", :name => "where", :value => @audition[:where]}
+      %input.hidden{:type => "hidden", :name => "description", :value => @audition[:description]}
+      %input.hidden{:type => "hidden", :name => "datepicker", :value => @audition[:datepicker]}    
+      %input#submit{:type => "submit", :value => "OK, Create audition"}
   
 
