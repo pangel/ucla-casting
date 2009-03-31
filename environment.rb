@@ -1,8 +1,10 @@
 require 'dm-core'
 require 'dm-validations'
 require 'haml'
+require 'sanitize'
 require 'sinatra' unless defined?(Sinatra)
 require 'devtools'
+
 
 configure do
 

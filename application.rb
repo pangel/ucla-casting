@@ -5,8 +5,6 @@ configure do
   set :views, "#{File.dirname(__FILE__)}/views"
 end
 
-
-
 #error do
 #  e = request.env['sinatra.error']
 #  puts e.to_s
@@ -71,7 +69,7 @@ helpers do
         }.flatten!
       }
   
-    times.call("am") + times.call("pm")
+    times.call(" am") + times.call(" pm")
   end
 end
 
@@ -94,11 +92,22 @@ get '/add' do
   haml :add
 end
 
+post '/preview' do
+  @preview = {}
+  @preview[:when] = Time.parse("#{params["when_date"]} #{params["when_time"]}").strftime("%A, %B %d %Y at %I:%M%p")
+  @preview[:description] = Sanitize.clean params["description"]
+  @preview[:where] = Sanitize.clean params["where"]
+  @preview[:title] = Sanitize.clean params["title"]
+  
+  @audition = params
+  haml :preview
+end
+
 post '/add' do
   @audition = Audition.new :when => Time.parse("#{params["when_date"]} #{params["when_time"]}"),
-                          :description => params["description"],
-                          :where => params["where"],
-                          :title => params["title"]
+                           :description => Sanitize.clean(params["description"]),
+                           :where => Sanitize.clean(params["where"]),
+                           :title => Sanitize.clean(params["title"])
                         
   @audition.errors.each do |e| 
     puts e 

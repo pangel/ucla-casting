@@ -1,0 +1,31 @@
+%a#list{:href => "javascript:history.back(1);"} 
+  %span Edit your <br />audition
+.form-title Preview your audition
+.add-form
+  .alt-one
+    %label Project title
+    %p= @preview[:title]
+  
+  .alt-two
+    %label When?
+    %p= "#{@preview[:when]}"
+  
+  .alt-one
+    %label Where?
+    %p= @preview[:where]
+  
+  .alt-two
+    %label What are you looking for? (gender, age...)
+    %p= @preview[:description].nl2br
+    
+  %form{:method => "post", :action => '/add'}
+    %input.hidden{:type => "hidden", :name => "title", :value => @audition[:title]}
+    %input.hidden{:type => "hidden", :name => "when_date", :value => @audition[:when_date]}
+    %input.hidden{:type => "hidden", :name => "when_time", :value => @audition[:when_time]}
+    %input.hidden{:type => "hidden", :name => "where", :value => @audition[:where]}
+    %input.hidden{:type => "hidden", :name => "description", :value => @audition[:description]}
+    
+    %a#cancel{:href => "javascript:history.back(1);"} Wait, go back
+    %input#submit{:type => "submit", :value => "OK, Create audition"}
+  
+
