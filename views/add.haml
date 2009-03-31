@@ -5,24 +5,24 @@
   %form{:method => "post", :action => "/preview"}
     .alt-one
       %label Project title
-      %input{:type => "text", :name => "title"}
+      %input{:type => "text", :name => "title", :value => @audition[:title]}
   
     .alt-two
       %label When?
       %fieldset
-        %input{:type => "text", :name => "datepicker", :id => "datepicker"}
-        %input{:type => "hidden", :name => "when_date", :id => "when_date"}
+        %input{:type => "text", :name => "datepicker", :id => "datepicker", :value => @audition[:datepicker]}
+        %input{:type => "hidden", :name => "when_date", :id => "when_date", :value => @audition[:when_date]}
         %span.at at
         %select{:name => "when_time", :id => "when-time"}
           - times_of_day.each do |time|
-            %option{:value => time, :selected => (time=="1:00 pm")}= time
+            %option{:value => time, :selected => (time==@audition[:when_time])}= time
   
     .alt-one
       %label Where?
-      %textarea{:rows => "3", :name => "where"}
+      %textarea{:rows => "3", :name => "where"}= @audition[:where]
   
     .alt-two
       %label What are you looking for? (gender, age...)
-      %textarea{:rows => "4", :name => "description"}
+      %textarea{:rows => "4", :name => "description"}= @audition[:description]
   
     %input#submit{:type => "submit", :value => "Submit audition"}
