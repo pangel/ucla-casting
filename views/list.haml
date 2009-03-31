@@ -1,5 +1,8 @@
 %a#add{:href => "/add"} 
   %span Add new <br></br>audition
+- if @success
+  .audition 
+    %p#success Your audition was successfully registered! If you cannot see it, wait a few moments and refresh the page.
 - @auditions.each do |audition|
   .audition
     %p.delay-wrap<

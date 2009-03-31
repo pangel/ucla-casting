@@ -84,6 +84,7 @@ before do
 end
 
 get '/' do
+  @success = params.has_key? "success"
   @auditions = Audition.all(:order => [:when.asc])
   haml :list
 end
@@ -132,7 +133,7 @@ post '/create' do
   @audition.errors.each do |e| 
     puts e 
   end unless @audition.save
-  haml :add  
+  redirect '/?success', 302
 end
 
 get '/stylesheets/style.css' do
