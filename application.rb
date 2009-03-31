@@ -50,6 +50,12 @@ helpers do
     end
   end
   
+  class Hash
+    def map_values! &block
+      each_pair { |k,v| store(k,block.call(v)) }
+    end
+  end
+  
   def blue(string)
     puts "\n\e[0;34m #{string} \e[m\n\n"
   end
@@ -89,6 +95,20 @@ get '/migrateall/jHRo2IRhTjysEz68JlfR' do
 end
 
 get '/add' do
+  @audition = {:title => "", :when_date => "", :description => "", :datepicker => "", :when_time => times_of_day[40]}
+  haml :add
+end
+
+post '/add' do
+  @audition = {}
+  @audition[:title] = params["title"] || ""
+  @audition[:when_date] = params["when_date"] || ""
+  @audition[:description] = params["description"] || ""
+  @audition[:where]= params["where"] || ""
+  @audition[:when_time] = params["when_time"] || times_of_day[40]
+  @audition[:datepicker] = params["datepicker"] || ""
+  green @audition[:datepicker]
+  @audition.map_values! { |value| Sanitize.clean value }
   haml :add
 end
 
@@ -103,7 +123,7 @@ post '/preview' do
   haml :preview
 end
 
-post '/add' do
+post '/create' do
   @audition = Audition.new :when => Time.parse("#{params["when_date"]} #{params["when_time"]}"),
                            :description => Sanitize.clean(params["description"]),
                            :where => Sanitize.clean(params["where"]),
@@ -112,7 +132,7 @@ post '/add' do
   @audition.errors.each do |e| 
     puts e 
   end unless @audition.save
-  haml :add
+  haml :add  
 end
 
 get '/stylesheets/style.css' do
