@@ -75,7 +75,7 @@ helpers do
         }.flatten!
       }
   
-    times.call(" am") + times.call(" pm")
+    times.call("am") + times.call("pm")
   end
 end
 
