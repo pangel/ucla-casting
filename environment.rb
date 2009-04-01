@@ -10,7 +10,7 @@ configure do
 
  DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3:///my.db')
  
-  # load models
+  # load models and extensions
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
   Dir.glob("#{File.dirname(__FILE__)}/lib/*.rb") { |lib| require File.basename(lib, '.*') }
 end
