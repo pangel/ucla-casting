@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'dm-core'
 require 'dm-validations'
 require 'haml'
@@ -13,6 +14,10 @@ configure do
   # load models and extensions
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
   Dir.glob("#{File.dirname(__FILE__)}/lib/*.rb") { |lib| require File.basename(lib, '.*') }
+  
+  $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib/models")
+  Dir.glob("#{File.dirname(__FILE__)}/lib/models/*.rb") { |model| require File.basename(model, '.*') }
+
 end
 
 configure :development do
