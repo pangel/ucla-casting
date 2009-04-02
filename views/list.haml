@@ -4,7 +4,7 @@
   .audition 
     %p#success Your audition was successfully registered! If you cannot see it, wait a few moments and refresh the page.
 - @auditions.each do |audition|
-  .audition
+  .audition{:id => audition.id}
     %p.delay-wrap<
       %span.delay= audition.when.to_delay.downcase!
     %h2= "#{audition.title.downcase}"

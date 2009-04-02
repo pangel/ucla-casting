@@ -6,7 +6,7 @@ configure do
 end
 
 helpers Helpers, DevelopmentHelpers #Located at lib/extensions.rb
-  
+
 before do
   response["Content-Type"] = "text/html; charset=utf-8" 
 end
