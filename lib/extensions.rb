@@ -1,21 +1,28 @@
 # Monkey patches
 class Time
-  def to_delay
+  def to_delay(options = {})
+    now = options[:now] || options['now'] || Time.now
     # Process the duration between two dates in natural language.
     # _self_ is assumed to be greater than Time.now
     # Contains many unadressed edge cases: last day of week, last day of month, last day of year ...
-    now = Time.now
+     
     if self.yday == now.yday
       "Today"
+    elsif self < now
+      "Too late"
     elsif self.yday == now.yday+1 and self.year == now.year
       "Tomorrow"
-    elsif self.strftime("%W").to_i == now.strftime("%W").to_i+1
+    elsif self.strftime("%W").to_i == now.strftime("%W").to_i and self.year == now.year
+      "This week"
+    elsif self.strftime("%W").to_i == now.strftime("%W").to_i+1 and self.year == now.year
       "Next week"
-    elsif self.month == now.month+1
+    elsif self.month == now.month and self.year == now.year
+      "This month"
+    elsif self.month == now.month+1 and self.year == now.year
       "Next month"
     else
       "Later"
-    end unless self.year != now.year # We don't want to compare 2k9 to 2k10.
+    end
   end
 end
 
