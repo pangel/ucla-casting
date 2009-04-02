@@ -14,7 +14,7 @@ end
 get '/' do
   @success = params.has_key? "success" #Flag for flash display after successful audition creation
   
-  @auditions = Audition.all(:order => [:when.asc])
+  @auditions = Audition.all(:when.gt => Time.now, :order => [:when.asc])
   
   haml :list
 end
