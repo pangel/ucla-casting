@@ -8,7 +8,7 @@ end
 helpers Helpers, DevelopmentHelpers #Located at lib/extensions.rb
   
 before do
-  blue (params.inspect)
+  response["Content-Type"] = "text/html; charset=utf-8" 
 end
 
 get '/' do
@@ -23,7 +23,7 @@ get '/migrateall/jHRo2IRhTjysEz68JlfR' do
   DataMapper.auto_migrate!
   Devtools.load_dev_data
   
-  haml "%h1 Migration Completed. <br />Dev Data Loaded."
+  haml "%h1 Migration Completed. <br>Dev Data Loaded."
 end
 
 get '/add' do
@@ -73,6 +73,6 @@ post '/create' do
 end
 
 get '/stylesheets/style.css' do
-  headers 'Content-Type' => 'text/css; charset=utf-8'
+  response["Content-Type"] = "text/css; charset=utf-8" 
   sass :style
 end
