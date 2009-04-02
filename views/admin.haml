@@ -1,0 +1,20 @@
+.audition
+  %h2 Delete an audition
+  %form.admin{:method => "post", :action => "/admin"}
+    %label Password
+    %input{:type => "text", :name => "pwd"}
+    
+    %label Delete audition (enter id)
+    %input{:type => "text", :name => "delete"}
+  
+    %input{:type => "submit", :value => "Delete a record"}
+  
+  %h2 Reset database
+  %form.admin{:method => "post", :action => "/admin"}
+    %label Password
+    %input{:type => "text", :name => "pwd"}
+    
+    %label Reset DB with development data (must be on localhost)
+    %input{:type => "text", :name => "reset", :value => "YES/NO"}
+  
+    %input{:type => "submit", :value => "RESET THE DATABASE"}

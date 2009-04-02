@@ -19,11 +19,33 @@ get '/' do
   haml :list
 end
 
-get '/migrateall/jHRo2IRhTjysEz68JlfR' do
-  DataMapper.auto_migrate!
-  Devtools.load_dev_data
+get '/admin' do
+  haml :admin
+end
+
+post '/admin' do
+  require 'sha1'
+  throw(:halt, [401, "Not authorized\n"]) and return unless \
+  SHA1.new(params["pwd"]).to_s == "9fdb1a12b37c7b0efc28276fce277e957ebd034f"
   
-  haml "%h1 Migration Completed. <br>Dev Data Loaded."
+  if audition = Audition.get(params["delete"].to_i)
+    title = audition.title
+    id = params["delete"]
+    
+    audition.destroy
+    
+    haml "%h2 #{title} (#{id}) was destroyed forever."
+  elsif params["reset"] == "YES"
+    if request.env["SERVER_NAME"] == "localhost"
+      DataMapper.auto_migrate!
+      Devtools.load_dev_data
+      haml "%h2 Database reset completed. Dev Data Loaded"
+    else
+      haml "%h2 Not on local host, won't reset database."
+    end
+  else
+      haml "%h2 Something went wrong."  
+  end
 end
 
 get '/add' do
