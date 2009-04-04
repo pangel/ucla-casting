@@ -74,8 +74,8 @@ module Helpers
     times.call("am") + times.call("pm")
   end
   
-  def localhost?
-    request.env["SERVER_NAME"] == "localhost"
+  def dev_env?
+    options.environment  === :development
   end
   
   def define_flashes params

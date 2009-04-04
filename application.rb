@@ -26,7 +26,7 @@ end
 post '/admin' do
   require 'sha1'
   throw(:halt, [401, "Not authorized\n"]) and return unless \
-  (SHA1.new(params["pwd"]).to_s == "9fdb1a12b37c7b0efc28276fce277e957ebd034f" or localhost?)
+  (SHA1.new(params["pwd"]).to_s == "9fdb1a12b37c7b0efc28276fce277e957ebd034f" or dev_env?)
   
   unless params["migration"].nil?
     if Devtools.migrations.singleton_methods.include? params["migration"]
@@ -39,11 +39,11 @@ post '/admin' do
   
   case params["operation"].upcase
   when "RESET":
-    halt haml "%h2 Resets are only allowed on localhost, during dev." unless localhost?
+    halt haml "%h2 Resets are only allowed on localhost, during dev." unless dev_env?
     DataMapper.auto_migrate!
     halt haml "%h2 Database reset completed"
   when "ADD DEV DATA":
-    halt haml "%h2 Loading dev data is only allowed on localhost, during dev."  unless localhost?
+    halt haml "%h2 Loading dev data is only allowed on localhost, during dev."  unless dev_env?
     Devtools.load_dev_data
     halt haml "%h2 Dev Data Loaded"
   end unless params["operation"].nil?
