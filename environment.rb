@@ -10,7 +10,7 @@ require 'devtools'
 configure do
 
  DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3:///my.db')
- DataMapper.auto_upgrade!
+ 
   # load models and extensions
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
   Dir.glob("#{File.dirname(__FILE__)}/lib/*.rb") { |lib| require File.basename(lib, '.*') }
@@ -18,6 +18,7 @@ configure do
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib/models")
   Dir.glob("#{File.dirname(__FILE__)}/lib/models/*.rb") { |model| require File.basename(model, '.*') }
 
+  DataMapper.auto_upgrade!
 end
 
 configure :development do
