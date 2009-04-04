@@ -107,10 +107,6 @@ post '/create' do
   end
 end
 
-get '/test' do
-  haml ".a= options.environment.to_s"
-end
-
 get '/stylesheets/style.css' do
   response["Content-Type"] = "text/css; charset=utf-8" 
   sass :style
