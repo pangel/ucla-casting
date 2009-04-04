@@ -46,9 +46,6 @@ post '/admin' do
     halt haml "%h2 Loading dev data is only allowed on localhost, during dev."  unless localhost?
     Devtools.load_dev_data
     halt haml "%h2 Dev Data Loaded"
-  when "UPGRADE"
-    DataMapper.auto_upgrade!
-    halt haml "%h2 Upgraded DB schema to fit models."
   end unless params["operation"].nil?
   
   unless params["delete"].nil?
