@@ -1,5 +1,5 @@
 sinatra 0.9.1
-dm-core 0.9.10
-dm-validations 0.9.10
+dm-core 0.9.11
+dm-validations 0.9.11
 hpricot 0.7
 sanitize 1.0.6
