@@ -9,12 +9,20 @@
   
     %input{:type => "submit", :value => "Delete a record"}
   
-  %h2 Reset database
+  %h2 Special operation 
   %form.admin{:method => "post", :action => "/admin"}
     %label Password
     %input{:type => "text", :name => "pwd"}
     
-    %label Reset DB with development data (must be on localhost)
-    %input{:type => "text", :name => "reset", :value => "YES/NO"}
+    %label Operation name (upgrade, reset, add dev data)
+    %input{:type => "text", :name => "operation", :value => ""}
   
-    %input{:type => "submit", :value => "RESET THE DATABASE"}
+    %input{:type => "submit", :value => "EXECUTE OPERATION"}
+  
+  %h2 Run a migration
+  %form.admin{:method => "post", :action => "/admin"}
+    %select{:name => "migration"}
+      - @migrations.each do |m|
+        %option{:value => m}= m
+    %input{:type => "submit", :vlaue => "RUN MIGRATION"}
+  

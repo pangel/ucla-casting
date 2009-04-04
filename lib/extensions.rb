@@ -73,4 +73,8 @@ module Helpers
 
     times.call("am") + times.call("pm")
   end
+  
+  def localhost?
+    request.env["SERVER_NAME"] == "localhost"
+  end
 end

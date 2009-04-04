@@ -8,45 +8,59 @@ end
 helpers Helpers, DevelopmentHelpers #Located at lib/extensions.rb
 
 before do
-  response["Content-Type"] = "text/html; charset=utf-8" 
+  response["Content-Type"] = "text/html; charset=utf-8"
 end
 
 get '/' do
   @success = params.has_key? "success" #Flag for flash display after successful audition creation
   
   @auditions = Audition.all(:when.gt => Time.now, :order => [:when.asc])
-  
   haml :list
 end
 
 get '/admin' do
+  @migrations = Devtools.migrations.singleton_methods
   haml :admin
 end
 
 post '/admin' do
   require 'sha1'
   throw(:halt, [401, "Not authorized\n"]) and return unless \
-  SHA1.new(params["pwd"]).to_s == "9fdb1a12b37c7b0efc28276fce277e957ebd034f"
+  (SHA1.new(params["pwd"]).to_s == "9fdb1a12b37c7b0efc28276fce277e957ebd034f" or localhost?)
   
-  if audition = Audition.get(params["delete"].to_i)
+  unless params["migration"].nil?
+    if Devtools.migrations.singleton_methods.include? params["migration"]
+      Devtools.migrations.send(params["migration"].to_sym)
+      halt haml "%h2 Migration #{params["migration"]} done."
+    else
+      halt haml "%h2 Migration #{params["migration"]} is unknown."
+    end
+  end
+  
+  case params["operation"].upcase
+  when "RESET":
+    halt haml "%h2 Resets are only allowed on localhost, during dev." unless localhost?
+    DataMapper.auto_migrate!
+    halt haml "%h2 Database reset completed"
+  when "ADD DEV DATA":
+    halt haml "%h2 Loading dev data is only allowed on localhost, during dev."  unless localhost?
+    Devtools.load_dev_data
+    halt haml "%h2 Dev Data Loaded"
+  when "UPGRADE"
+    DataMapper.auto_upgrade!
+    halt haml "%h2 Upgraded DB schema to fit models."
+  end unless params["operation"].nil?
+  
+  unless params["delete"].nil?
+    audition = Audition.get(params["delete"].to_i)
+    halt haml "%h2 Audition with id #{id} was not found." if audition.nil?
     title = audition.title
     id = params["delete"]
-    
     audition.destroy
-    
-    haml "%h2 #{title} (#{id}) was destroyed forever."
-  elsif params["reset"] == "YES"
-    if request.env["SERVER_NAME"] == "localhost"
-      DataMapper.auto_migrate!
-      Devtools.load_dev_data
-      haml "%h2 Database reset completed. Dev Data Loaded"
-    else
-      haml "%h2 Not on local host, won't reset database."
-    end
-  else
-      haml "%h2 Something went wrong."  
+    halt haml "%h2 #{title} (#{id}) was destroyed forever."
   end
-end
+  haml "%h2 Your request was malformed (check spelling of operation)"  
+end  
 
 get '/add' do
   @audition = {:title => "", :when_date => "", :description => "", :datepicker => "", :when_time => times_of_day[40]}
