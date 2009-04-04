@@ -12,8 +12,8 @@ before do
 end
 
 get '/' do
-  @success = params.has_key? "success" #Flag for flash display after successful audition creation
-  
+  # Define flashes
+  define_flashes params
   @auditions = Audition.all(:when.gt => Time.now, :order => [:when.asc])
   haml :list
 end
@@ -102,10 +102,12 @@ post '/create' do
                            :where => Sanitize.clean(params["where"]),
                            :title => Sanitize.clean(params["title"])
                         
-  @audition.errors.each do |e| 
-    puts e 
-  end unless @audition.save
-  redirect '/?success', 302
+  if @audition.save
+    redirect '/?success', 302
+  else
+    redirect '/?duplicate', 302 if @audition.errors.include? ["Sha1 is already taken"]
+    redirect '/?error', 302
+  end
 end
 
 get '/stylesheets/style.css' do

@@ -77,4 +77,10 @@ module Helpers
   def localhost?
     request.env["SERVER_NAME"] == "localhost"
   end
+  
+  def define_flashes params
+    %w[success duplicate error].each do |f|
+      instance_variable_set("@#{f}".to_sym, true) if params.has_key? f
+    end
+  end
 end

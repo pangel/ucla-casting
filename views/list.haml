@@ -3,6 +3,13 @@
 - if @success
   .audition 
     %p#success Your audition was successfully registered! If you cannot see it, wait a few moments and refresh the page.
+- if @duplicate
+  .audition 
+    %p#duplicate The audition you're trying to create already exists. Did you click on submit twice?
+- if @success
+  .audition 
+    %p#error We're sorry, but something went wrong. Please try again, and send us an email at ahusson@ucla.edu if things don't get better.
+    
 - @auditions.each do |audition|
   .audition{:id => audition.id}
     %p.delay-wrap<
