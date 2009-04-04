@@ -11,7 +11,7 @@
     %p#error We're sorry, but something went wrong. Please try again, and send us an email at ahusson@ucla.edu if things don't get better.
     
 - @auditions.each do |audition|
-  .audition{:id => audition.id}
+  .audition{:id => audition.sha1}
     %p.delay-wrap<
       %span.delay= audition.when.to_delay.downcase!
     %h2= "#{audition.title.downcase}"

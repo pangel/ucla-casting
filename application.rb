@@ -52,12 +52,12 @@ post '/admin' do
   end unless params["operation"].nil?
   
   unless params["delete"].nil?
-    audition = Audition.get(params["delete"].to_i)
-    halt haml "%h2 Audition with id #{id} was not found." if audition.nil?
-    title = audition.title
-    id = params["delete"]
+    sha1 = params["delete"]
+    audition = Audition.first(:sha1 => sha1)
+    halt haml "%h2 Audition with sha1 #{sha1} was not found." if audition.nil?
+    
     audition.destroy
-    halt haml "%h2 #{title} (#{id}) was destroyed forever."
+    halt haml "%h2 #{audition.title} (#{sha1}) was destroyed forever."
   end
   haml "%h2 Your request was malformed (check spelling of operation)"  
 end  
