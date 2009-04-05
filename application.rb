@@ -39,11 +39,11 @@ post '/admin' do
   
   case params["operation"].upcase
   when "RESET":
-    halt haml "%h2 Resets are only allowed on localhost, during dev." unless dev_env?
+    halt haml "%h2 Resets are only allowed in development." unless dev_env?
     DataMapper.auto_migrate!
     halt haml "%h2 Database reset completed"
   when "ADD DEV DATA":
-    halt haml "%h2 Loading dev data is only allowed on localhost, during dev."  unless dev_env?
+    halt haml "%h2 Loading dev data is only allowed in development."  unless dev_env?
     Devtools.load_dev_data
     halt haml "%h2 Dev Data Loaded"
   end unless params["operation"].nil?
