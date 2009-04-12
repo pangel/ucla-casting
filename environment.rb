@@ -32,6 +32,18 @@ configure do
   :user      => "uclacasting@gmail.com",
   :password       => ENV['SMTP_PASSWORD'] || "WRONG-PASSWORD!"
   }
+
+  # Generates an array of all times from 12:00am to 12:00pm, with 15 minutes increments. Result should be cached.
+  TIMES_OF_DAY = begin
+    times = Proc.new { |suffix| 
+        [12].concat((1..11).to_a).map! { |e| 
+          [0,15,30,45].map { |f|
+            "#{e}:#{f.width(2)} #{suffix}" 
+          }
+        }.flatten!
+      }
+    times.call("am") + times.call("pm")
+  end
 end
 
 configure :development do
