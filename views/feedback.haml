@@ -1,0 +1,14 @@
+%a#list{:href => "/"} 
+  %span Back to <br>list
+%p.form-title Contact UCLA Casting
+.add-form
+  %form{:method => "post", :action => "/feedback"}
+    .alt-one
+      %label Your email (optional)
+      %input{:type => "text", :name => "email"}
+  
+    .alt-two
+      %label What's up?
+      %textarea{:rows => "3", :name => "body"}
+      
+    %input#submit{:type => "submit", :value => "Send it"}

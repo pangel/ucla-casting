@@ -79,7 +79,7 @@ module Helpers
   end
   
   def define_flashes params
-    %w[success duplicate error].each do |f|
+    %w[success duplicate error feedback_success feedback_failure feedback_blank].each do |f|
       instance_variable_set("@#{f}".to_sym, true) if params.has_key? f
     end
   end

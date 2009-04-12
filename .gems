@@ -3,3 +3,4 @@ dm-core 0.9.11
 dm-validations 0.9.11
 hpricot 0.7
 sanitize 1.0.6
+ambethia-smtp-tls 1.1.2

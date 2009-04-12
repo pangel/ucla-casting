@@ -8,8 +8,17 @@
     %p#duplicate The audition you're trying to create already exists. Did you click on submit twice?
 - if @error
   .audition 
-    %p#error We're sorry, but something went wrong. Please try again, and send us an email at ahusson@ucla.edu if things don't get better.
-    
+    %p#error We're sorry, but something went wrong. Please try again, and send us an email at uclacasting@ucla.edu if things don't get better.
+- if @feedback_success
+  .audition 
+    %p#success Thank you so much for the feedback.
+- if @feedback_blank
+  .audition 
+    %p#duplicate Uh, did you write anything?
+- if @feedback_failure
+  .audition 
+    %p#error We're sorry, but something went wrong. Please try again, and send us an email at uclacasting@gmail.com if things don't get better.
+
 - @auditions.each do |audition|
   .audition{:id => audition.sha1}
     %p.delay-wrap<

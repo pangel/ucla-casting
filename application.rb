@@ -11,6 +11,25 @@ before do
   response["Content-Type"] = "text/html; charset=utf-8"
 end
 
+get '/feedback' do
+  haml :feedback
+  end
+
+post '/feedback' do
+  define_flashes params
+  redirect '?/feedback_blank' if params[:body].nil? or params[:body].blank?
+  
+  body = "From: " + Sanitize.clean(params[:email] || "no email given") + "\n\n" + params[:body]
+  
+  begin
+    Pony.mail :to => 'pangel.neu@gmail.com', :subject => "Feedback from uclacasting", :body => body, :via => :smtp, :smtp => SMTP_SETTINGS
+    redirect '/?feedback_success'
+  rescue
+    puts "FEEDBACK SENDING FAILED: " + $!
+    redirect '/?feedback_failure'
+  end
+end
+
 get '/' do
   # Define flashes
   define_flashes params
