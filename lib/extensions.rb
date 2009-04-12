@@ -61,17 +61,9 @@ module DevelopmentHelpers
 end
 
 module Helpers
-  # Generates an array of all times from 12:00am to 12:00pm, with 15 minutes increments. Result should be cached.
+  # Convenience method
   def times_of_day
-    times = Proc.new { |suffix| 
-        [12].concat((1..11).to_a).map! { |e| 
-          [0,15,30,45].map { |f|
-            "#{e}:#{f.width(2)} #{suffix}" 
-          }
-        }.flatten!
-      }
-
-    times.call("am") + times.call("pm")
+    TIMES_OF_DAY
   end
   
   def dev_env?
