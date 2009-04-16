@@ -79,48 +79,44 @@ post '/admin' do
 end  
 
 get '/add' do
-  @audition = {:title => "", :when_date => "", :description => "", :datepicker => "", :when_time => times_of_day[40]}
+  @audition = AUDITION_DEFAULTS
   
   haml :add
 end
 
 post '/add' do
-  @audition = {}
-  
-  @audition[:title] = params["title"] || ""
-  @audition[:when_date] = params["when_date"] || ""
-  @audition[:description] = params["description"] || ""
-  @audition[:where]= params["where"] || ""
-  @audition[:when_time] = params["when_time"] || times_of_day[40]
-  @audition[:datepicker] = params["datepicker"] || ""
-
-  @audition.map_values! { |value| Sanitize.clean value }
+  @audition = audition_from params
   
   haml :add
 end
 
 post '/preview' do
-  @preview = {} #Values that will be displayed in the preview box
+  
+  @audition = audition_from params
+  @validatable_audition = Audition.create_with params
+
+  if not @validatable_audition.valid?
+    @errors = @validatable_audition.errors
+    halt(haml :add) 
+  end
+  
+  @preview = Hash.new
   
   @preview[:when] = Time.parse("#{params["when_date"]} #{params["when_time"]}").strftime("%A, %B %d %Y at %I:%M%p")
   @preview[:description] = Sanitize.clean params["description"]
   @preview[:where] = Sanitize.clean params["where"]
   @preview[:title] = Sanitize.clean params["title"]
-  
-  @audition = params #Values that will be sent to the DB. TODO: Check SQL inject & XSS attacks.
-  
+
   haml :preview
 end
 
 post '/create' do
-  @audition = Audition.new :when => Time.parse("#{params["when_date"]} #{params["when_time"]}"),
-                           :description => Sanitize.clean(params["description"]),
-                           :where => Sanitize.clean(params["where"]),
-                           :title => Sanitize.clean(params["title"])
+  @audition = Audition.create_with(params)
                         
   if @audition.save
     redirect '/?success', 302
   else
+    puts @audition.errors.inspect
     redirect '/?duplicate', 302 if @audition.errors.include? ["Sha1 is already taken"]
     redirect '/?error', 302
   end

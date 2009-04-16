@@ -75,4 +75,15 @@ module Helpers
       instance_variable_set("@#{f}".to_sym, true) if params.has_key? f
     end
   end
+  
+    
+  def audition_from(params)
+    audition = Hash.new
+    
+    AUDITION_DEFAULTS.each_pair { |k,v| 
+      audition[k] = params[k.to_s] || v 
+    }
+  
+    audition.map_values! { |value| Sanitize.clean value }
+  end
 end

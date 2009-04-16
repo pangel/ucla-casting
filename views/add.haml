@@ -1,5 +1,11 @@
 %a#list{:href => "/"} 
   %span Back to <br>list
+- if @errors
+  .audition 
+    %p#error 
+      We couldn't record your audition because:
+      - @errors.each do |e|
+        = "<br> - #{e}"
 %p.form-title Create new audition
 .add-form
   %form{:method => "post", :action => "/preview"}

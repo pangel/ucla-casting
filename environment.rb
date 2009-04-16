@@ -44,6 +44,14 @@ configure do
       }
     times.call("am") + times.call("pm")
   end
+  
+  AUDITION_DEFAULTS = {:title => "",
+                       :when_date => "",
+                       :descrioption => "",
+                       :where => "",
+                       :when_time => TIMES_OF_DAY[40],
+                       :datepicker => ""
+                      }
 end
 
 configure :development do
