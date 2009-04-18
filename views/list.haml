@@ -1,8 +1,11 @@
 %a#add{:href => "/add"} 
   %span Add new <br>audition
-- if @success
+- if @created
   .audition 
-    %p#success Your audition was successfully registered! If you cannot see it, wait a few moments and refresh the page.
+    %p#success Your audition was successfully created! You should receive a notification email soon.
+- if @edited
+  .audition
+    %p#success Your audition was modified!
 - if @duplicate
   .audition 
     %p#duplicate The audition you're trying to create already exists. Did you click on submit twice?
@@ -18,18 +21,22 @@
 - if @feedback_failure
   .audition 
     %p#error We're sorry, but something went wrong. Please try again, and send us an email at uclacasting@gmail.com if things don't get better.
+- if @deleted
+  .audition
+    %p#success You audition was successfully deleted!
 
 - @auditions.each do |audition|
   .audition{:id => audition.sha1}
     %p.delay-wrap<
       %span.delay= audition.when.to_delay.downcase!
     %h2= "#{audition.title.downcase}"
-   
+    %a.edit{:href => "/edit?id=#{audition.sha1}"} (edit)
+    %a.edit{:href => "/delete?id=#{audition.sha1}"} (delete)
     %div.access
-      %p
+      %p.first
         %span.when When:
         = audition.when.strftime "%A, %B %d %Y at %I:%M%p"
       %p
         %span.where Where:
         = audition.where
-    %p.description= audition.description.nl2br
+    %p.description= audition.description.nl2br  

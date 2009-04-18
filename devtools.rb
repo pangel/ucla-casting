@@ -19,6 +19,16 @@ Wardrobe: USED CLOTHES - CAN BE PROVIDED."}
           a.save
         }
       end
+      
+      def add_passwords
+        require 'sha1'
+        unprotected_auditions = Audition.all(:pwd => nil)
+        unprotected_auditions.each { |a|
+          a.email = "uclacasting@gmail.com"
+          a.pwd = ""
+          a.save
+        }
+      end
     end
   end
   

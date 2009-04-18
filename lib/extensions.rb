@@ -71,19 +71,36 @@ module Helpers
   end
   
   def define_flashes params
-    %w[success duplicate error feedback_success feedback_failure feedback_blank].each do |f|
+    %w[created edited duplicate error feedback_success feedback_failure feedback_blank deleted].each do |f|
       instance_variable_set("@#{f}".to_sym, true) if params.has_key? f
     end
   end
   
-    
-  def audition_from(params)
-    audition = Hash.new
-    
-    AUDITION_DEFAULTS.each_pair { |k,v| 
-      audition[k] = params[k.to_s] || v 
-    }
+  def authenticate!(sha1,pwd,email)
+      halt 404, "Not Found. Mis-typed the link?" unless sha1 && audition = Audition.first(:sha1 => sha1)
+      halt 401, "Not authorized. Wrong email/password?." unless audition.pwd == SHA1.new(pwd).to_s && audition.email == email
+      return audition
+  end
+
+  def notify(audition,password)
+    body = <<-EOS
+    Your audition for #{audition.title.upcase} was successfully created.
   
-    audition.map_values! { |value| Sanitize.clean value }
+    You can view it on #{SITE_URL}
+  
+    If you wish to modify your audition, follow this link #{SITE_URL}/edit?id=#{audition.sha1}
+      
+    You will need the following credentials:
+    email #{audition.email}
+    password #{password}
+  
+    Important: If you set your audition to a date earlier than today, it will disappear from the front page. Your only way to bring it back up will be to use the link given above, so keep this email!
+    EOS
+  
+    begin
+      Pony.mail :to => audition.email, :subject => "Your audition was successfully created on UCLA Casting", :body => body, :via => :smtp, :smtp => SMTP_SETTINGS
+    rescue
+      puts "NOTIFY SENDING FAILED: " + $!
+    end
   end
 end

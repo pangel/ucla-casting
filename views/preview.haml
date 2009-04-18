@@ -4,39 +4,47 @@
 .add-form
   .alt-one
     %label Project title
-    %p= @preview[:title]
+    %p= Sanitize.clean(@audition.title)
   
   .alt-two
     %label When?
-    %p= "#{@preview[:when]}"
+    %p= Time.parse("#{params["when_date"]} #{params["when_time"]}").strftime("%A, %B %d %Y at %I:%M%p")
   
   .alt-one
     %label Where?
-    %p= @preview[:where]
+    %p= Sanitize.clean(@audition.where)
   
   .alt-two
     %label What are you looking for? (gender, age...)
-    %p= @preview[:description].nl2br
-  %p#confirm Are you sure? There is no turning back.
+    %p= Sanitize.clean(@audition.description).nl2br
+    
+  .alt-two
+    %label Email and password (optional, only if you wish to modify your audition later)
+    %p= Sanitize.clean(@audition.email)
+    %p= @audition.pwd
+  %p#confirm Are you sure?
     
   
   #confirm-buttons
     %form.hidden{:method => "post", :action => '/add'}
-      %input.hidden{:type => "hidden", :name => "title", :value => @audition[:title]}
-      %input.hidden{:type => "hidden", :name => "when_date", :value => @audition[:when_date]}
-      %input.hidden{:type => "hidden", :name => "when_time", :value => @audition[:when_time]}
-      %input.hidden{:type => "hidden", :name => "where", :value => @audition[:where]}
-      %input.hidden{:type => "hidden", :name => "description", :value => @audition[:description]}
-      %input.hidden{:type => "hidden", :name => "datepicker", :value => @audition[:datepicker]}
+      %input.hidden{:type => "hidden", :name => "title", :value => @audition.title}
+      %input.hidden{:type => "hidden", :name => "when_date", :value => @audition.when_date}
+      %input.hidden{:type => "hidden", :name => "when_time", :value => @audition.when_time}
+      %input.hidden{:type => "hidden", :name => "where", :value => @audition.where}
+      %input.hidden{:type => "hidden", :name => "description", :value => @audition.description}
+      %input.hidden{:type => "hidden", :name => "email", :value => @audition.email}
+      %input.hidden{:type => "hidden", :name => "sha1", :value => @audition.sha1}
       %input#cancel{:type => "submit", :value => "Wait, go back"}
     
-    %form.hidden{:method => "post", :action => '/create'}
-      %input.hidden{:type => "hidden", :name => "title", :value => @audition[:title]}
-      %input.hidden{:type => "hidden", :name => "when_date", :value => @audition[:when_date]}
-      %input.hidden{:type => "hidden", :name => "when_time", :value => @audition[:when_time]}
-      %input.hidden{:type => "hidden", :name => "where", :value => @audition[:where]}
-      %input.hidden{:type => "hidden", :name => "description", :value => @audition[:description]}
-      %input.hidden{:type => "hidden", :name => "datepicker", :value => @audition[:datepicker]}    
+    %form.hidden{:method => "post", :action => (@edit ? '/edit' : '/create')}
+      %input.hidden{:type => "hidden", :name => "title", :value => @audition.title}
+      %input.hidden{:type => "hidden", :name => "when_date", :value => @audition.when_date}
+      %input.hidden{:type => "hidden", :name => "when_time", :value => @audition.when_time}
+      %input.hidden{:type => "hidden", :name => "where", :value => @audition.where}
+      %input.hidden{:type => "hidden", :name => "description", :value => @audition.description}
+      %input.hidden{:type => "hidden", :name => "email", :value => @audition.email}
+      %input.hidden{:type => "hidden", :name => "pwd", :value => @audition.pwd}
+      %input.hidden{:type => "hidden", :name => "sha1", :value => @audition.sha1}
       %input#submit{:type => "submit", :value => "OK, Create audition"}
   
 

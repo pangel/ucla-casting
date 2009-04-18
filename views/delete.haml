@@ -1,0 +1,14 @@
+%a#list{:href => "/"} 
+  %span Back to <br>list
+%p.form-title Delete an audition (no coming back!)
+.add-form
+  %form{:method => "post", :action => "/delete"}
+    .alt-one
+      %label Your email
+      %input{:type => "text", :name => "email", :value => ""}
+    .alt-two
+      %label Password
+      %input{:type => "password", :name => "pwd"}
+    %input.hidden{:type => "hidden", :name => "sha1", :id => "sha1", :value => @sha1}  
+    %input#submit{:type => "submit", :value => "Delete audition"}
+      

@@ -1,3 +1,4 @@
+require 'sha1'
 require 'rubygems'
 require 'dm-core'
 require 'dm-validations'
@@ -10,8 +11,20 @@ require 'devtools'
 
 
 configure do
-
- DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3:///my.db')
+  
+  # Constants required by the helpers
+  SITE_URL = "http://simple-light-15.heroku.com"
+      
+  SMTP_SETTINGS = {
+  :host        => "smtp.gmail.com",
+  :port           => 587,
+  :domain         => "uclacasting@gmail.com",
+  :auth => :plain,
+  :user      => "uclacasting@gmail.com",
+  :password       => ENV['SMTP_PASSWORD'] || "WRONG-PASSWORD!"
+  }
+  
+  DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3:///my.db')
  
   # load models and extensions
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
@@ -22,36 +35,19 @@ configure do
 
   DataMapper.auto_upgrade!
   
-  # Constants
-  
-  SMTP_SETTINGS = {
-  :host        => "smtp.gmail.com",
-  :port           => 587,
-  :domain         => "uclacasting@gmail.com",
-  :auth => :plain,
-  :user      => "uclacasting@gmail.com",
-  :password       => ENV['SMTP_PASSWORD'] || "WRONG-PASSWORD!"
-  }
 
+  # Constants that require the helpers
   # Generates an array of all times from 12:00am to 12:00pm, with 15 minutes increments. Result should be cached.
   TIMES_OF_DAY = begin
     times = Proc.new { |suffix| 
         [12].concat((1..11).to_a).map! { |e| 
           [0,15,30,45].map { |f|
-            "#{e}:#{f.width(2)} #{suffix}" 
+            "#{e.width(2)}:#{f.width(2)} #{suffix}" 
           }
         }.flatten!
       }
     times.call("am") + times.call("pm")
   end
-  
-  AUDITION_DEFAULTS = {:title => "",
-                       :when_date => "",
-                       :descrioption => "",
-                       :where => "",
-                       :when_time => TIMES_OF_DAY[40],
-                       :datepicker => ""
-                      }
 end
 
 configure :development do

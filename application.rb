@@ -5,14 +5,13 @@ configure do
   set :views, "#{File.dirname(__FILE__)}/views"
 end
 
-helpers Helpers, DevelopmentHelpers #Located at lib/extensions.rb
+helpers Helpers, DevelopmentHelpers
 
 before do
   response["Content-Type"] = "text/html; charset=utf-8"
 end
 
 get '/' do
-  # Define flashes
   define_flashes params
   
   @auditions = Audition.all(:when.gt => Time.now, :order => [:when.asc])
@@ -20,51 +19,78 @@ get '/' do
 end
 
 get '/add' do
-  @audition = AUDITION_DEFAULTS
-  
+  @audition = Audition.new
   haml :add
 end
 
 post '/add' do
-  @audition = audition_from params
-  
+  @audition = Audition.clean_new params
+
   haml :add
 end
 
-post '/preview' do
-  @audition = audition_from params
-  @validatable_audition = Audition.create_with params
+get '/edit' do
+  halt 404, "Not found" unless @audition = Audition.first(:sha1 => params["id"])
+  
+  @edit = true
+  haml :add
+end
 
-  if not @validatable_audition.valid?
-    @errors = @validatable_audition.errors
+post '/edit' do
+  @audition = authenticate!(params["sha1"],params["pwd"],params["email"])
+  
+  @audition.clean_change params
+
+  if @audition.update
+    redirect '/?edited', 302
+  else
+    puts @audition.errors.inspect
+    redirect '/?error', 302
+  end
+end  
+
+get '/delete' do
+  @sha1 = params["id"]
+  haml :delete
+end
+
+post '/delete' do
+  @audition = authenticate!(params["sha1"],params["pwd"],params["email"])
+  @audition.destroy
+  redirect '/?deleted', 302
+end
+
+post '/preview' do
+  @audition = Audition.first(:sha1 => params["sha1"]) || Audition.new
+
+  @audition.clean_change params  
+
+  if not @audition.valid?
+    @errors = @audition.errors
     halt(haml :add) 
   end
   
-  @preview = Hash.new
-  
-  @preview[:when] = Time.parse("#{params["when_date"]} #{params["when_time"]}").strftime("%A, %B %d %Y at %I:%M%p")
-  @preview[:description] = Sanitize.clean params["description"]
-  @preview[:where] = Sanitize.clean params["where"]
-  @preview[:title] = Sanitize.clean params["title"]
-
+  @edit = true unless @audition.new_record?
   haml :preview
 end
 
 post '/create' do
-  @audition = Audition.create_with(params)
-                        
+  @audition = Audition.clean_new params
+  pwd = @audition.pwd                  
   if @audition.save
-    redirect '/?success', 302
+    notify(@audition,pwd)
+    redirect '/?created', 302
   else
     puts @audition.errors.inspect
-    redirect '/?duplicate', 302 if @audition.errors.include? ["Sha1 is already taken"]
     redirect '/?error', 302
   end
 end
 
+
+
 get '/feedback' do
   haml :feedback
-  end
+end
 
 post '/feedback' do
   define_flashes params

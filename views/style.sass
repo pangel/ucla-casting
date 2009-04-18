@@ -17,9 +17,16 @@ h1
   :background-repeat no-repeat
   :position relative
   :bottom -0.2em
+  
 a
   :text-decoration none
-
+  
+a,p
+  // Base font size: 14pt (1.4 * 62.5% of 16pt)
+  :font-size 1.4em
+  // Baseline: 22pt (1.5 * 1.4em * 62.5% of 16pt)
+  :line-height 1.57143em 
+  
 #bottom
   :text-align center
   a
@@ -98,14 +105,21 @@ h2
   :font-size 2em
   :line-height 1.1em
   :margin-top -5px
-  :border-bottom 2px solid #899F9C
+  //:border-bottom 2px solid #899F9C
   :padding 0.4em 0em 0.4em 0em
+  :float left
   
-a,p
-  // Base font size: 14pt (1.4 * 62.5% of 16pt)
-  :font-size 1.4em
-  // Baseline: 22pt (1.5 * 1.4em * 62.5% of 16pt)
-  :line-height 1.57143em 
+a.edit
+  :color #899F9C
+  :float left
+  :font-size 1.2em
+  :line-height 1.83333em
+  :margin-left 1.2em
+  :padding 0.416667em
+  
+  &:hover
+    :font-weight bold
+    :color #FD5138
 
 .description
   :border-color #899F9C
@@ -120,6 +134,10 @@ a,p
   :font-size 1.2em
   :line-height 1.8333em
   :background-color #D2DEDC  
+  :clear both
+  
+.access p.first
+  :border-top 2px solid #899F9C
   
 .when, .where
   :display none

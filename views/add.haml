@@ -6,29 +6,33 @@
       We couldn't record your audition because:
       - @errors.each do |e|
         = "<br> - #{e}"
-%p.form-title Create new audition
+%p.form-title= @edit ? "Edit your audition" : "Create new audition"
 .add-form
   %form{:method => "post", :action => "/preview"}
     .alt-one
       %label Project title
-      %input{:type => "text", :name => "title", :value => @audition[:title]}
+      %input{:type => "text", :name => "title", :value => @audition.title}
   
     .alt-two
       %label When?
       %fieldset
-        %input{:type => "text", :name => "datepicker", :id => "datepicker", :value => @audition[:datepicker]}
-        %input{:type => "hidden", :name => "when_date", :id => "when_date", :value => @audition[:when_date]}
+        %input{:type => "text", :name => "datepicker", :id => "datepicker"}
+        %input{:type => "hidden", :name => "when_date", :id => "when_date"}
         %span.at at
         %select{:name => "when_time", :id => "when-time"}
           - times_of_day.each do |time|
-            %option{:value => time, :selected => (time==@audition[:when_time])}= time
-  
+            %option{:value => time, :selected => (time==@audition.when.strftime("%I:%M %p").downcase)}= time
+
     .alt-one
       %label Where?
-      %textarea{:rows => "3", :name => "where"}= @audition[:where]
+      %textarea{:rows => "3", :name => "where"}= @audition.where
   
     .alt-two
       %label What are you looking for? (gender, age...)
-      %textarea{:rows => "4", :name => "description"}= @audition[:description]
-  
+      %textarea{:rows => "4", :name => "description"}= @audition.description
+    .alt-one
+      %label= "Email and password " + (@edit ? "(to prove you created this audition!)" : "(optional, only if you wish to modify your audition later)")
+      %input{:type => "text", :name => "email", :id => "email", :value => ""}
+      %input{:type => "password", :name => "pwd", :id => "pwd", :value => ""}
+      %input.hidden{:type => "hidden", :name => "sha1", :id => "sha1", :value => @audition.sha1}  
     %input#submit{:type => "submit", :value => "Submit audition"}
